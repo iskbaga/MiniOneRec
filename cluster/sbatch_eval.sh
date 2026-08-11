@@ -18,6 +18,7 @@ export TRITON_CACHE_DIR=/tmp/triton_ibagautdinov
 export WANDB_MODE=offline
 export TOKENIZERS_PARALLELISM=false
 cd ~/MiniOneRec
+echo "=== git: $(git rev-parse --short HEAD) @ $(git branch --show-current), dirty: $(git status --porcelain | wc -l) files"
 
 : "${EXP_NAME:?Set EXP_NAME to the model dir to evaluate}"
 category=Industrial_and_Scientific

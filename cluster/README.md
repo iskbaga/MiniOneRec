@@ -24,11 +24,12 @@ cd ~/MiniOneRec
 sbatch --time=00:40:00 --export=ALL,SAMPLE=2048,MICRO_BS=4 cluster/sbatch_sft_05b.sh
 sbatch --export=ALL cluster/sbatch_sft_05b.sh
 
-# RL (нужен SFT-чекпоинт)
-sbatch --export=ALL,MODEL_PATH=/mnt/tank/scratch/ibagautdinov/minionerec_runs/sft_... cluster/sbatch_rl_05b.sh
+# RL (нужен SFT-чекпоинт; ВАЖНО: именно .../final_checkpoint —
+# только там сохраняется токенизатор с SID-токенами, корень output_dir — без него)
+sbatch --export=ALL,MODEL_PATH=/mnt/tank/scratch/ibagautdinov/minionerec_runs/sft_.../final_checkpoint cluster/sbatch_rl_05b.sh
 
-# Оценка (HR@K / NDCG@K, constrained beam search 50)
-sbatch --export=ALL,EXP_NAME=/mnt/tank/scratch/ibagautdinov/minionerec_runs/... cluster/sbatch_eval.sh
+# Оценка (HR@K / NDCG@K, constrained beam search 50) — тоже от final_checkpoint
+sbatch --export=ALL,EXP_NAME=/mnt/tank/scratch/ibagautdinov/minionerec_runs/.../final_checkpoint cluster/sbatch_eval.sh
 ```
 
 ## Грабли

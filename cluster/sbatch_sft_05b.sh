@@ -22,6 +22,7 @@ export WANDB_MODE=offline
 export NCCL_IB_DISABLE=1
 export TOKENIZERS_PARALLELISM=false
 cd ~/MiniOneRec
+echo "=== git: $(git rev-parse --short HEAD) @ $(git branch --show-current), dirty: $(git status --porcelain | wc -l) files"
 
 category=Industrial_and_Scientific
 train_file=$(ls ./data/Amazon/train/${category}*11.csv)
@@ -45,4 +46,6 @@ torchrun --nproc_per_node 2 --master_port 29517 sft.py \
     --item_meta_path ./data/Amazon/index/${category}.item.json \
     --freeze_LLM False
 
+cp /nfs/home/ibagautdinov/MiniOneRec/logs/sft-${SLURM_JOB_ID}.out \
+   /mnt/tank/scratch/ibagautdinov/minionerec_runs/${run_name}/slurm.log 2>/dev/null || true
 echo "=== finished $(date)"

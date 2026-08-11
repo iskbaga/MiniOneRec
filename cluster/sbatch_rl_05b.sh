@@ -22,6 +22,7 @@ export WANDB_MODE=offline
 export NCCL_IB_DISABLE=1
 export TOKENIZERS_PARALLELISM=false
 cd ~/MiniOneRec
+echo "=== git: $(git rev-parse --short HEAD) @ $(git branch --show-current), dirty: $(git status --porcelain | wc -l) files"
 
 : "${MODEL_PATH:?Set MODEL_PATH to the SFT checkpoint dir}"
 category=Industrial_and_Scientific
@@ -62,4 +63,6 @@ accelerate launch \
     --sid_index_path ./data/Amazon/index/${category}.index.json \
     --item_meta_path ./data/Amazon/index/${category}.item.json
 
+cp /nfs/home/ibagautdinov/MiniOneRec/logs/rl-${SLURM_JOB_ID}.out \
+   /mnt/tank/scratch/ibagautdinov/minionerec_runs/${run_name}/slurm.log 2>/dev/null || true
 echo "=== finished $(date)"

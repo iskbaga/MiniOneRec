@@ -21,7 +21,7 @@
 | Slurm-лог | `~/MiniOneRec/logs/<стадия>-<jobid>.out` + копия `slurm.log` рядом с чекпоинтом |
 | Git-состояние | первая строка лога: `=== git: <hash> @ <ветка>, dirty: N files` |
 | Кривые обучения | `~/MiniOneRec/wandb/offline-run-*` (run_name совпадает) |
-| Метрики eval | `results/<run_name>/final_result_*.json` — коммитятся в репо |
+| Метрики eval | `results/<run_name>/metrics.txt` — коммитится в репо; полный json предсказаний (~10MB) — `<run_dir>/eval_final_result.json` на scratch |
 | Запись в журнале | строка в `docs/runs.md` |
 
 Правило: **`dirty: 0`** в логе. Если в логе dirty > 0 — ран не считается отчётным

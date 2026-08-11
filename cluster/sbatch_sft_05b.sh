@@ -10,7 +10,7 @@
 # MiniOneRec SFT: Qwen2.5-0.5B на midas (2x RTX 3080 Ti 12GB, Ampere = bf16 OK)
 # Смок-тест:  sbatch --time=00:40:00 --export=ALL,SAMPLE=2048,MICRO_BS=4 sbatch_sft_05b.sh
 # Полный ран: sbatch --export=ALL sbatch_sft_05b.sh
-set -x
+set -xeo pipefail
 echo "=== node $(hostname), started $(date)"
 nvidia-smi --query-gpu=name,memory.total --format=csv
 

@@ -23,6 +23,8 @@ echo "=== git: $(git rev-parse --short HEAD) @ $(git branch --show-current), dir
 : "${EXP_NAME:?Set EXP_NAME to the model dir to evaluate}"
 category=Industrial_and_Scientific
 exp_name_clean=$(basename "$EXP_NAME")
+# от final_checkpoint имя неинформативно и коллидирует между ранами — берём имя рана
+[ "$exp_name_clean" = "final_checkpoint" ] && exp_name_clean=$(basename "$(dirname "$EXP_NAME")")
 test_file=$(ls ./data/Amazon/test/${category}*11.csv | head -1)
 info_file=$(ls ./data/Amazon/info/${category}*.txt | head -1)
 temp_dir="./temp/${category}-${exp_name_clean}-${SLURM_JOB_ID}"

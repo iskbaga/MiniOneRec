@@ -10,7 +10,7 @@
 # MiniOneRec RL (GRPO): стартует с SFT-чекпоинта.
 # Запуск: sbatch --export=ALL,MODEL_PATH=/nfs/home/ibagautdinov/MiniOneRec/output/sft_qwen05b_... sbatch_rl_05b.sh
 # Смок:   sbatch --time=02:00:00 --export=ALL,MODEL_PATH=...,EPOCHS=0.01 sbatch_rl_05b.sh
-set -x
+set -xeo pipefail
 echo "=== node $(hostname), started $(date)"
 nvidia-smi --query-gpu=name,memory.total --format=csv
 

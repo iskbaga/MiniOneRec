@@ -308,9 +308,25 @@ def train(
 
     trainer.save_model(output_dir)
 
-    output_dir = os.path.join(output_dir, "final_checkpoint")
-    trainer.model.save_pretrained(output_dir)
-    tokenizer.save_pretrained(output_dir)
-    
+    # final_checkpoint пишет только главный ранк: параллельная запись одних и тех же
+    # файлов на NFS обоими ранками оставляла второй ранк висеть до таймаута джобы
+    final_dir = os.path.join(output_dir, "final_checkpoint")
+    if trainer.args.process_index == 0:
+        trainer.model.save_pretrained(final_dir)
+        tokenizer.save_pretrained(final_dir)
+        try:
+            import wandb
+            if wandb.run is not None:
+                wandb.finish()
+        except Exception:
+            pass
+
+    # штатного exit'а не дожидаемся: cleanup-треды paged-оптимизатора bnb и деструктор
+    # DeepSpeedEngine подвешивают выход процесса (джоба зависала после train до TIMEOUT)
+    trainer.accelerator.wait_for_everyone()
+    if torch.distributed.is_initialized():
+        torch.distributed.destroy_process_group()
+    os._exit(0)
+
 if __name__ == "__main__":
     Fire(train)

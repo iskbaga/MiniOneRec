@@ -9,7 +9,8 @@
 
 # MiniOneRec RL (GRPO): стартует с SFT-чекпоинта.
 # Запуск: sbatch --export=ALL,MODEL_PATH=/nfs/home/ibagautdinov/MiniOneRec/output/sft_qwen05b_... sbatch_rl_05b.sh
-# Смок:   sbatch --time=02:00:00 --export=ALL,MODEL_PATH=...,EPOCHS=0.01 sbatch_rl_05b.sh
+# Смок:   sbatch --time=01:00:00 --export=ALL,MODEL_PATH=...,EPOCHS=0.01,EVAL_STEP=0.9 sbatch_rl_05b.sh
+# (eval внутри RL = полная генерация по валид-сету, ~9 мин за прогон — не ставить частым)
 set -xeo pipefail
 echo "=== node $(hostname), started $(date)"
 nvidia-smi --query-gpu=name,memory.total --format=csv
@@ -45,7 +46,7 @@ accelerate launch \
     --info_file ${info_file} \
     --category ${category} \
     --sample_train ${SAMPLE_TRAIN:-False} \
-    --eval_step 0.0999 \
+    --eval_step ${EVAL_STEP:-0.0999} \
     --reward_type ranking \
     --num_generations 16 \
     --mask_all_zero False \

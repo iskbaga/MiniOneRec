@@ -1,0 +1,12 @@
+run: rl_qwen05b_Industrial_and_Scientific_797219 (RL baseline: GRPO/ranking поверх SFT 797177)
+eval job: 797529, beam=50 constrained, test 4533 examples, midas 2x3080Ti
+train: 2 эпохи, 15ч35м, G=16 beam sampling, eff.batch 64 промптов/шаг (GRAD_ACC=32), lr 1e-5, beta 1e-3, sync_ref
+model: /mnt/tank/scratch/ibagautdinov/minionerec_runs/rl_qwen05b_Industrial_and_Scientific_797219/final_checkpoint
+
+topk:  [1        3        5        10       20       50      ]
+NDCG:  [0.05515  0.07094  0.07628  0.08504  0.09390  0.10537 ]
+HR:    [0.05515  0.08229  0.09530  0.12244  0.15751  0.21531 ]
+CC: 0
+
+vs SFT (797177):        NDCG@3 +3.4% rel, HR@3 +5.7% rel;  NDCG@10 -0.3%, HR@10 -1.6%, HR@50 -4.3% rel
+интерпретация: rank-aware награда чуть подтянула топ-3, просадив хвост; суммарно RL из коробки ~= SFT (1 сид)
